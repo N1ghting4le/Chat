@@ -1,0 +1,38 @@
+.listItem {
+    display: flex;
+    padding: 1rem;
+    gap: 30px;
+    align-items: center;
+    text-decoration: none;
+    color: rgb(107, 107, 107);
+    font-size: 1.2rem;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #898989;
+}
+
+.userInfoWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: black;
+}
+
+.counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    background-color: #a9a8a8;
+    color: #fff;
+}
+
+@media (max-width: 480px) {
+    .listItem {
+        font-size: 1rem;
+        gap: 10px
+    }
+}

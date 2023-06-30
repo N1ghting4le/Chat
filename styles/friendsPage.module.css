@@ -1,0 +1,110 @@
+.navigation {
+    display: none;
+}
+
+.main {
+    display: flex;
+    width: 100%;
+}
+
+.friendsListWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 0;
+    gap: 16px;
+}
+
+.list {
+    text-align: center;
+    width: 100%;
+    padding: 1rem 0;
+}
+
+.input {
+    width: 80%;
+    height: 45px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 1.2rem;
+}
+
+.listItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 1rem;
+    border-bottom: 1px solid black;
+    font-size: 1.2rem;
+}
+
+.split {
+    background-color: black;
+    width: 1px;
+    height: calc(100vh - 60px);
+}
+
+.friendsListItem {
+    background-color: #f1f1f1;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+    text-decoration: none;
+    color: black;
+    font-size: 1.2rem;
+}
+
+.button {
+    padding: 0 1rem;
+    height: 45px;
+    min-width: 150px;
+    border: 0;
+    font-size: inherit;
+    border-radius: 10px;
+    color: #fff;
+    background-color: blue;
+    cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .navigation {
+        display: flex;
+        width: 100%;
+        padding: 10px 0;
+        background-color: #2b2a2a;
+        position: fixed;
+        bottom: 0;
+    }
+
+    .navLink {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        color: #fff;
+        text-decoration: none;
+    }
+    
+    .main {
+        flex-direction: column;
+    }
+
+    .list {
+        border-top: 2px solid black;
+        padding-bottom: 30px;
+    }
+    
+    .split {
+        display: none;
+    }
+
+    .listItem {
+        font-size: 1rem;
+    }
+}

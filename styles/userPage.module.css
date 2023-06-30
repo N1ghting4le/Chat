@@ -1,0 +1,129 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    padding: 2rem;
+}
+
+.image {
+    width: 400px;
+    height: 400px;
+}
+
+.userInfo {
+    display: flex;
+    gap: 50px;
+}
+
+.textInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.4rem;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.infoString {
+    display: flex;
+    gap: 10px;
+}
+
+.button {
+    padding: 0 1rem;
+    min-height: 45px;
+    min-width: 150px;
+    border: 0;
+    font-size: inherit;
+    border-radius: 10px;
+    color: #fff;
+    background-color: blue;
+    cursor: pointer;
+}
+
+.buttonLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: 100%;
+    text-decoration: none;
+    color: #fff;
+}
+
+.buttonSection {
+    display: flex;
+    align-items: flex-end;
+    gap: 30px;
+}
+
+.buttonWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.optionWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: start center;
+    gap: 20px 100px; 
+}
+
+.message {
+    display: flex;
+    justify-content: center;
+    grid-column: 1 / 3;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 480px) {
+    .main {
+        gap: 30px;
+    }
+    
+    .userInfo {
+        flex-direction: column;
+    }
+    
+    .image {
+        width: 100%;
+        height: 100%;
+    }
+
+    .textInfoWrapper {
+        font-size: 1.1rem;
+    }
+
+    h1.bold {
+        font-size: 2rem;
+    }
+
+    .infoString {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .buttonSection {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .buttonWrapper, .optionWrapper {
+        width: 100%;
+    }
+
+    .optionWrapper {
+        text-align: center;
+        gap: 20px;
+    }
+
+    .optionWrapper .button {
+        min-width: 0;
+        width: fit-content;
+    }
+}
