@@ -1,6 +1,6 @@
 "use client";
 
-const BASE_URL = process.env.BASE_URL;
+const {BASE_URL} = require('.env.js');
 
 import useHttp from "@/hooks/http.hook";
 import { useSearchParams } from "next/navigation";

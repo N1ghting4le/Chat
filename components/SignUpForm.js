@@ -1,6 +1,6 @@
 "use client";
 
-const BASE_URL = process.env.BASE_URL;
+const {BASE_URL} = require('.env.js');
 
 import Loading from "./Loading";
 import useHttp from "@/hooks/http.hook";

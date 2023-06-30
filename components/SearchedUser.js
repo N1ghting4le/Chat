@@ -1,4 +1,4 @@
-const BASE_URL = process.env.BASE_URL;
+const {BASE_URL} = require('.env.js');
 
 import Link from "next/link";
 import Image from "next/image";
