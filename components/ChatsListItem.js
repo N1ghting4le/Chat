@@ -1,6 +1,6 @@
 "use client";
 
-const {BASE_URL} = require('.env.js');
+const BASE_URL = process.env.BASE_URL;
 
 import Image from "next/image";
 import Link from "next/link";
