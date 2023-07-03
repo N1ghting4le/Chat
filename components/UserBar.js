@@ -31,7 +31,10 @@ const UserBar = ({online, login}) => {
                     {online ? typing ? <span>Печатает...</span> : <span>В сети</span> : null}
                 </div>
             </div>
-            {!isBlocked && blockedUsers ? <button className={styles.userBarButton} onClick={toggleUserBlocking}>{blockedUsers.includes(login) ? 'Разблокировать' : 'Заблокировать'}</button> : null}
+            {!isBlocked && blockedUsers ? <Image onClick={toggleUserBlocking} 
+            src={blockedUsers.includes(login) ? 'https://img.icons8.com/ios/45/lock.png' : 'https://img.icons8.com/ios/45/unlock.png'}
+            alt={blockedUsers.includes(login) ? 'unlock user' : 'block user'} 
+            width={45} height={45} style={{'cursor': 'pointer'}}/> : null}
         </div>
     );
 }
