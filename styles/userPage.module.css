@@ -91,14 +91,8 @@
     
     .image {
         width: 100%;
-        object-fit: contain;
+        max-height: 90vw;
     }
-
-    .image::after {
-        content: '';
-        display: block;
-        padding-top: 100%;
-    } 
 
     .textInfoWrapper {
         font-size: 1.1rem;
