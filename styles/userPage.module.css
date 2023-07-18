@@ -8,6 +8,7 @@
 .image {
     width: 400px;
     height: 400px;
+    object-fit: cover;
 }
 
 .userInfo {
@@ -90,6 +91,7 @@
     
     .image {
         width: 100%;
+        object-fit: contain;
     }
 
     .image::after {
