@@ -101,11 +101,7 @@
         width: 100%;
     }
 
-    .label {
-        padding: 0 1rem;
-    }
-
     .search {
-        right: calc(1rem + 5px);
+        right: 5px;
     }
 }
