@@ -38,7 +38,7 @@ const userPage = async ({params}) => {
                 <Header/>
                 <main className={styles.main}>
                     <section className={styles.userInfo}>
-                        <img src={image ? `${BASE_URL}/${image}` : "https://img.icons8.com/material/400/7B92AD/camera--v1.png"} alt={`profile photo of ${name}`} className={styles.image} style={{'objectFit': 'cover'}}/>
+                        <img src={image ? `${BASE_URL}/${image}` : "https://img.icons8.com/material/400/7B92AD/camera--v1.png"} alt={`profile photo of ${name}`} className={styles.image}/>
                         <div className={styles.textInfoWrapper}>
                             <h1 className={styles.bold}>{name} {surname}</h1>
                             {age ? 
