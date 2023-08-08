@@ -20,6 +20,21 @@ h1 {
   font-size: 3rem;
 }
 
+@keyframes popup {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: 146px;
+  }
+}
+
+.popup-content {
+  animation: popup 0.3s;
+  overflow-y: hidden;
+}
+
 @media (min-width: 481px) {
   html,
   body {

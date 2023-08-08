@@ -4,6 +4,7 @@ const {BASE_URL} = require('.env.js');
 
 import Link from "next/link";
 import Image from "next/image";
+import HeaderMenuMobile from "./HeaderMenuMobile";
 import { useRef, useState, useEffect, useContext, useMemo } from "react";
 import useHttp from "@/hooks/http.hook";
 import SearchedUsersList from "./SearchedUsersList";
@@ -39,6 +40,7 @@ const Header = () => {
 
     return (
         <header className={styles.header} ref={el => ref.current = el}>
+            <HeaderMenuMobile myLogin={myLogin} friendNotsTotal={friendNotsTotal} friendRequestsTotal={friendRequestsTotal} total={total}/>
             <nav className={styles.navigation}>
                 <Link href={myLogin ? `/users/${myLogin}` : ''} className={styles.link}>Мой профиль</Link>
                 <Link href="/friends" className={styles.link}>Друзья {friendNotsTotal ? <span className={styles.chatCounter}>{friendNotsTotal}</span> : null}</Link>

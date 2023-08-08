@@ -7,6 +7,10 @@
     background-color: blue;
 }
 
+.button, .navigationMobile {
+    display: none;
+}
+
 .navigation {
     display: flex;
     gap: 20px;
@@ -54,28 +58,43 @@
 }
 
 @media (max-width: 480px) {
-    .header {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        overflow: auto visible;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
+    .button {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 25px;
+        background-color: transparent;
+        border: 0;
     }
 
-    .navigation, .label, .exitLink {
-        width: 100vw;
-        scroll-snap-align: center;
+    .line {
+        width: 100%;
+        background-color: #fff;
+        border: 0;
+        height: 1px;
     }
 
     .navigation {
-        justify-content: space-between;
-        padding-right: 5px;
-        align-items: center;
+        display: none;
+    }
+
+    .navigationMobile {
+        display: flex;
+        flex-direction: column;
     }
 
     .link {
         font-size: 1rem;
+        margin-bottom: 10px;
         text-align: center;
+    }
+
+    .link.exitLink {
+        margin-bottom: 0;
+    }
+
+    .link:first-child {
+        padding-top: 10px;
     }
 
     .input {
