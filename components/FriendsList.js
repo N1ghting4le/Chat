@@ -17,8 +17,18 @@ const FriendsList = () => {
     }, [string, friends]);
 
     const searchFriends = (e) => setString(e.target.value);
-    const renderElements = () => friendProcess === 'loading' ? <Loading/> : friendProcess === 'error' ? <h2 style={{'color': 'red'}}>Произошла ошибка</h2> :
-    friendProcess === 'success' && friends ? friends.length ? friends.map((friend, i) => <FriendsListItem key={friend} string={string} login={friend} index={i}/>) : <h1>У вас пока нет друзей</h1> : null;
+
+    const renderElements = () => {
+        switch (friendProcess) {
+            case 'loading': return <Loading/>;
+            case 'error': return <h2 style={{'color': 'red'}}>Произошла ошибка</h2>;
+            case 'success': return friends && friends.length ? 
+                friends.map((friend, i) => <FriendsListItem key={friend} string={string} login={friend} index={i}/>) :
+                <h1>У вас пока нет друзей</h1>;
+            default: return null;
+        }
+    }
+
     const elements = renderElements();
 
     return (

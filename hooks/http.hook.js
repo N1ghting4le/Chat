@@ -3,31 +3,13 @@ const {BASE_URL} = require('.env.js');
 import { useCallback } from "react";
 
 const useHttp = () => {
-    const postData = useCallback(async (url, body, setProcess) => {
+    const postData = useCallback(async (url, body, setProcess, isFormData) => {
         const headers = {'Content-Type': 'application/json; charset=utf-8'};
         const method = 'POST';
     
         try {
             setProcess('loading');
-            const res = await fetch(url, {method, headers, body});
-            if (!res.ok) {
-                setProcess('error');
-                throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-            }
-            setProcess('idle');
-            return await res.json();
-        } catch(err) {
-            console.log(`Could not fetch ${url}`);
-            setProcess('error');
-        }
-    }, []);
-
-    const postFormData = useCallback(async (url, body, setProcess) => {
-        const method = 'POST';
-    
-        try {
-            setProcess('loading');
-            const res = await fetch(url, {method, body});
+            const res = await fetch(url, isFormData ? {method, body} : {method, headers, body});
             if (!res.ok) {
                 setProcess('error');
                 throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
@@ -70,13 +52,16 @@ const useHttp = () => {
                 const response = JSON.parse(data);
                 const myLogin = localStorage.getItem('myLogin');
                 if (response.text) {
-                    if (!users) getData(`${BASE_URL}/getLastMessage/${response.chatId}`).then(res => setChats(chats => chats.map(chat => chat.chatId === res.chatId ? {...chat, lastMessage: res} : chat)));
+                    if (!users) getData(`${BASE_URL}/getLastMessage/${response.chatId}`).then(res => {
+                        setChats(chats => chats.map(chat => chat.chatId === res.chatId ? {...chat, lastMessage: res} : chat));
+                    });
+
                     if (typeof response.index !== 'undefined') {
                         setMessages(messages => messages.map((message, i) => i === response.index ? response : message));
                         return;
-                    } else {
-                        setMessages(messages => [...messages, response]);
                     }
+                    
+                    setMessages(messages => [...messages, response]);
                 
                     if (!users || !users.includes(response.login)) {
                         setCounters(counters => counters.map(counter => counter.id === response.chatId ? {...counter, number: counter.number + 1} : counter));
@@ -84,12 +69,11 @@ const useHttp = () => {
                         users.forEach(login => {
                             if (login !== myLogin) {
                                 getData(`${BASE_URL}/getCurrentChat/${login}`).then(res => {
-                                    !res.chatId || res.chatId !== response.chatId ? getData(`${BASE_URL}/increaseCounter/${response.chatId}/${login}`) : null;
+                                    if (!res.chatId || res.chatId !== response.chatId) getData(`${BASE_URL}/increaseCounter/${response.chatId}/${login}`);
                                 });
                             }
                         });
                     }
-
                 } else if (typeof response.online !== 'undefined') {
                     setOnline(response.online);
                 } else if (response.id && !response.delete && (!response.answer && !response.state)) {
@@ -98,17 +82,15 @@ const useHttp = () => {
                     setTyping(response.typing);
                 } else if (response.delete) {
                     setMessages(messages => messages.filter(message => message.id !== response.id));
-                    if (!users) getData(`${BASE_URL}/getLastMessage/${response.chatId}`).then(res => setChats(chats => chats.map(chat => chat.chatId === res.chatId ? res.text ? {...chat, lastMessage: res} : {...chat, lastMessage: {}} : chat)));
-                    if (!response.read) {
-                        getData(`${BASE_URL}/getCurrentChat/${myLogin}`)
-                            .then(res => {
-                                res.chatId === response.chatId ? null :
-                                setCounters(counters => counters.map(counter => counter.id === response.chatId ? {...counter, number: counter.number - 1} : counter));
-                            });
-                    }
+                    if (!users) getData(`${BASE_URL}/getLastMessage/${response.chatId}`).then(res => {
+                        setChats(chats => chats.map(chat => chat.chatId === res.chatId ? res.text ? {...chat, lastMessage: res} : {...chat, lastMessage: {}} : chat))
+                    });
+                    if (!response.read) getData(`${BASE_URL}/getCurrentChat/${myLogin}`).then(res => {
+                        if (res.chatId !== response.chatId) setCounters(counters => counters.map(counter => counter.id === response.chatId ? {...counter, number: counter.number - 1} : counter));
+                    });
                 } else if (typeof response.block !== 'undefined') {
-                    response.login === myLogin ? setIsBlocked(response.block) : 
-                    response.block ? setBlockedUsers(users => [...users, response.login]) : setBlockedUsers(users => users.filter(login => login !== response.login));
+                    response.login === myLogin ? setIsBlocked(response.block) : response.block ? 
+                    setBlockedUsers(users => [...users, response.login]) : setBlockedUsers(users => users.filter(login => login !== response.login));
                 } else if (response.state) {
                     switch (response.state) {
                         case 'send':
@@ -150,7 +132,7 @@ const useHttp = () => {
         return eventSource;
     }, []);
 
-    return {postData, postFormData, getData, SSEConnection};
+    return {postData, getData, SSEConnection};
 }
 
 export default useHttp;

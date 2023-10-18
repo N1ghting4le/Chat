@@ -16,9 +16,11 @@ export const ChatsContext = createContext([]);
 export const FriendRequestsContext = createContext({});
 export const FriendContext = createContext([]);
 export const FriendNotificationsContext = createContext([]);
+export const MyLoginContext = createContext('');
 
 const SSEProvider = ({chatId, users, children}) => {
     const [online, setOnline] = useState('');
+    const [login, setLogin] = useState('');
     const [messages, setMessages] = useState([]);
     const [counters, setCounters] = useState([]);
     const [typing, setTyping] = useState(false);
@@ -35,27 +37,29 @@ const SSEProvider = ({chatId, users, children}) => {
     const [friendNotsProcess, setFriendNotsProcess] = useState('idle');
     const [friendRequestsProcess, setFriendRequestsProcess] = useState('idle');
     const {SSEConnection, getData} = useHttp();
+    let myLogin = '';
+
+    const listener = () => {
+        fetch(`${BASE_URL}/users/${myLogin}/exit`, { keepalive: true });
+        fetch(`${BASE_URL}/resetCurrentChat/${myLogin}`, { keepalive: true });
+    }
 
     useEffect(() => {
-        const myLogin = localStorage.getItem('myLogin');
+        myLogin = localStorage.getItem('myLogin');
+        setLogin(myLogin);
         getData(`${BASE_URL}/makeOnline/${myLogin}`);
         getData(`${BASE_URL}/friendRequests/${myLogin}`, setFriendRequestsProcess).then(res => setFriendRequests(res));
         getData(`${BASE_URL}/friends/${myLogin}`, setFriendProcess).then(res => setFriends(res));
         getData(`${BASE_URL}/friendNotifications/${myLogin}`, setFriendNotsProcess).then(res => setFriendNotifications(res));
         const eventSource = SSEConnection(`${BASE_URL}/events/${myLogin}`, users, setMessages, setOnline, setCounters, setTyping, setIsBlocked, setBlockedUsers, setChats, setFriendRequests, setFriends, setFriendNotifications);
-        const listener = () => {
-            getData(`${BASE_URL}/users/${myLogin}/exit`);
-            getData(`${BASE_URL}/resetCurrentChat/${myLogin}`);
-        }
-        window.addEventListener('beforeunload', listener);
+        window.addEventListener('unload', listener);
         return () => {
-            eventSource.close(); 
-            window.removeEventListener('beforeunload', listener);
+            eventSource.close();
+            window.removeEventListener('unload', listener); 
         }
     }, []);
 
     useEffect(() => {
-        const myLogin = localStorage.getItem('myLogin');
         if (chatId) {
             getData(`${BASE_URL}/blockedUsers/${myLogin}`).then(res => setBlockedUsers(res));
             getData(`${BASE_URL}/resetCounter/${chatId}/${myLogin}`).then(res => setCounters(res));
@@ -71,11 +75,10 @@ const SSEProvider = ({chatId, users, children}) => {
                 setIsCurrentChat(false);
                 getData(`${BASE_URL}/resetTyping/${myLogin}`);
             }
-            getData(`${BASE_URL}/resetCurrentChat/${myLogin}`)
-                .then(() => {
-                    getData(`${BASE_URL}/counters/${myLogin}`).then(res => setCounters(res));
-                    getData(`${BASE_URL}/lastMessages/${myLogin}`, setChatProcess).then(res => setChats(res));
-                }); 
+            getData(`${BASE_URL}/resetCurrentChat/${myLogin}`).then(() => {
+                getData(`${BASE_URL}/counters/${myLogin}`).then(res => setCounters(res));
+                getData(`${BASE_URL}/lastMessages/${myLogin}`, setChatProcess).then(res => setChats(res));
+            }); 
         }
     }, [chatId]);
 
@@ -91,7 +94,9 @@ const SSEProvider = ({chatId, users, children}) => {
                                         <FriendRequestsContext.Provider value={{friendRequests, setFriendRequests, friendRequestsProcess}}>
                                             <FriendContext.Provider value={{friends, setFriends, friendProcess}}>
                                                 <FriendNotificationsContext.Provider value={{friendNotifications, setFriendNotifications, friendNotsProcess}}>
-                                                    {children}
+                                                    <MyLoginContext.Provider value={login}>
+                                                        {children}
+                                                    </MyLoginContext.Provider>
                                                 </FriendNotificationsContext.Provider>
                                             </FriendContext.Provider>
                                         </FriendRequestsContext.Provider>

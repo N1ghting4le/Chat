@@ -1,3 +1,21 @@
 module.exports = {
-    BASE_URL: "https://chat-app-server-rpiq.onrender.com"
+    BASE_URL: "https://chat-app-server-rpiq.onrender.com",
+    REQUIRED_FIELD: 'Обязательное поле',
+    INVALID_PASSWORD: 'Пароль может содержать только латинские буквы, цифры, дефисы и нижние подчёркивания. Минимальная длина - 3 символа, максимальная - 13',
+    UNMATCHED_PASSWORD: 'Пароль в поле "Подтвердите пароль" не соответствует паролю в этом поле',
+    AVAILABLE: 'Доступен',
+    INVALID_LOGIN: 'Логин может содержать только латинские буквы, цифры, дефисы и нижние подчёркивания. Минимальная длина - 3 символа, максимальная - 13',
+    UNAVAILABLE: 'Такой логин уже занят',
+    LOGIN_ERROR: 'Невозможно проверить доступность логина',
+    INVALID_NAME: 'Имя может содержать только буквы кириллицы и дефис. Дефис не может стоять в начале и в конце. Минимальная длина - 2 символа, максимальная - 15',
+    INVALID_SURNAME: 'Фамилия может содержать только буквы кириллицы и дефис. Дефис не может стоять в начале и в конце. Минимальная длина - 2 символа, максимальная - 25',
+    INVALID_AGE: 'Значение возраста должно быть не меньше 12 и не больше 120',
+    PHOTO_FORMATS: ["image/jpeg", "image/png", "image/gif", "image/svg+xml"],
+    INVALID_PHOTO: 'Выбранный вами файл не является фотографией',
+    PHOTO_URL: "https://img.icons8.com/material/30/7B92AD/camera--v1.png",
+    LOCK: 'https://img.icons8.com/ios/45/lock.png',
+    UNLOCK: 'https://img.icons8.com/ios/45/unlock.png',
+    DOOR_ICON: "https://img.icons8.com/ios-filled/50/FA5252/door-opened.png",
+    SEARCH_ICON: "https://img.icons8.com/color/20/search--v1.png",
+    TICK: "https://img.icons8.com/color/48/checkmark--v1.png"
 };

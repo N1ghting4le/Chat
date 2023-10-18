@@ -31,12 +31,25 @@ const FriendNotsList = () => {
         readNotification();
     }, [friendNotsProcess, friendNotifications]);
 
-    const renderElements = () => friendNotsProcess === 'loading' ? <Loading/> : friendNotsProcess === 'error' ? <h2 style={{'color': 'red'}}>Произошла ошибка</h2> :
-    friendNotsProcess === 'success' ? friendNotifications.length ? friendNotifications.map((not, i) => {
-        const {id, answer, name, surname} = not;
+    const renderElements = () => {
+        switch (friendNotsProcess) {
+            case 'loading': return <Loading/>;
+            case 'error': return  <h2 style={{'color': 'red'}}>Произошла ошибка</h2>;
+            case 'success': return friendNotifications.length ? friendNotifications.map((not, i) => {
+                const {id, answer, name, surname} = not;
+                let message = 'удалил вас из своего списка друзей';
 
-        return <li key={id} id={id} data-read="false" style={!i ? {'borderTop': '1px solid black'} : null} className={styles.listItem}>Пользователь {name}{surname ? ' ' + surname : ''} {answer === 'accept' ? 'принял запрос' : answer === 'decline' ? 'отклонил запрос' : 'удалил вас из своего списка друзей'}</li>;
-    }) : <h1>Нет уведомлений</h1> : null;
+                switch (answer) {
+                    case 'accept': message = 'принял запрос'; break;
+                    case 'decline': message = 'отклонил запрос'; break;
+                }
+    
+                return <li key={id} id={id} data-read="false" style={!i ? {'borderTop': '1px solid black'} : null} className={styles.listItem}>Пользователь {name}{surname ? ' ' + surname : ''} {message}</li>;
+            }) : <h1>Нет уведомлений</h1>;
+            default: return null;
+        }
+    }
+
     const elements = renderElements();
 
     return (

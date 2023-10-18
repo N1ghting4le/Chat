@@ -22,9 +22,11 @@ const Form = () => {
     const { postData, getData } = useHttp();
 
     useEffect(() => {
-        if (localStorage.getItem('myLogin')) {
-            getData(`${BASE_URL}/users/${localStorage.getItem('myLogin')}/exit`);
-            getData(`${BASE_URL}/resetCurrentChat/${localStorage.getItem('myLogin')}`);
+        const login = localStorage.getItem('myLogin');
+
+        if (login) {
+            getData(`${BASE_URL}/users/${login}/exit`);
+            getData(`${BASE_URL}/resetCurrentChat/${login}`);
             localStorage.clear();
         }
     }, []);
@@ -39,14 +41,10 @@ const Form = () => {
             if (res) {
                 if (res.login) {
                     setInvalidData('');
-                    if (localStorage.getItem('myLogin') !== res.login) localStorage.setItem('myLogin', res.login);
+                    localStorage.setItem('myLogin', res.login);
                     router.push(`/users/${res.login}`);
                 } else {
-                    if (res.incorrectData === 'login') {
-                        setInvalidData('login');
-                    } else {
-                        setInvalidData('password');
-                    }
+                    res.incorrectData === 'login' ? setInvalidData('login') : setInvalidData('password');
                 }
             }
         });

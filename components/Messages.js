@@ -1,16 +1,15 @@
 "use client";
 
-const {BASE_URL} = require('.env.js');
+const {BASE_URL, TICK} = require('.env.js');
 
 import Image from "next/image";
 import { useState, useEffect, useRef, useContext, useMemo } from "react";
 import useHttp from "@/hooks/http.hook";
-import { MessagesContext, ChangingMessageContext, IsBlockedContext, BlockedUsersContext } from "./SSEProvider";
+import { MessagesContext, ChangingMessageContext, IsBlockedContext, BlockedUsersContext, MyLoginContext } from "./SSEProvider";
 
 import styles from "../styles/chatPage.module.css";
 
 const Messages = ({chatId, login}) => {
-    const [myLogin, setMyLogin] = useState('');
     const [arrow, setArrow] = useState(false);
     const [scroll, setScroll] = useState(true);
     const ref = useRef({});
@@ -18,11 +17,8 @@ const Messages = ({chatId, login}) => {
     const {setChangingMessage} = useContext(ChangingMessageContext);
     const isBlocked = useContext(IsBlockedContext);
     const blockedUsers = useContext(BlockedUsersContext);
+    const myLogin = useContext(MyLoginContext);
     const {getData} = useHttp();
-
-    useEffect(() => {
-        setMyLogin(localStorage.getItem('myLogin'));
-    }, []);
 
     useEffect(() => {
         scroll ? ref.current.scrollTop = ref.current.scrollHeight : null;
@@ -41,7 +37,7 @@ const Messages = ({chatId, login}) => {
     }
 
     const handleScroll = (e) => {
-        if (Math.floor(e.target.scrollHeight - e.target.clientHeight) - Math.floor(e.target.scrollTop) < 5) {
+        if (Math.floor(e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop) < 5) {
             setScroll(true);
             setArrow(false);
         } else {
@@ -81,7 +77,7 @@ const Messages = ({chatId, login}) => {
                     </div> : null}
                     <div className={styles.messageTextWrapper}>
                         <p style={login === myLogin ? {'backgroundColor': '#86c9fd'} : {'backgroundColor': '#dcdada'}} className={styles.message} onContextMenu={showContextMenu}>{text}</p>
-                        {login === myLogin && read ? <Image src="https://img.icons8.com/color/48/checkmark--v1.png" alt="tick" width={20} height={20}/> : null}
+                        {login === myLogin && read ? <Image src={TICK} alt="tick" width={20} height={20}/> : null}
                     </div>
                 </div>
             ) : null;

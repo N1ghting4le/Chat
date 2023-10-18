@@ -1,6 +1,6 @@
 'use client';
 
-const {BASE_URL} = require('.env.js');
+const {BASE_URL, PHOTO_URL} = require('.env.js');
 
 import Head from "next/head";
 import Header from "@/components/Header";
@@ -38,7 +38,7 @@ const userPage = async ({params}) => {
                 <Header/>
                 <main className={styles.main}>
                     <section className={styles.userInfo}>
-                        <img src={image ? `${BASE_URL}/${image}` : "https://img.icons8.com/material/400/7B92AD/camera--v1.png"} alt={`profile photo of ${name}`} className={styles.image}/>
+                        <img src={image ? `${BASE_URL}/${image}` : PHOTO_URL} alt={`profile photo of ${name}`} className={styles.image}/>
                         <div className={styles.textInfoWrapper}>
                             <h1 className={styles.bold}>{name} {surname}</h1>
                             {age ? 

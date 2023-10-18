@@ -6,7 +6,7 @@ import useHttp from "@/hooks/http.hook";
 import { useSearchParams } from "next/navigation";
 import { useRef, useState, useEffect, useContext } from "react";
 import { v4 } from "uuid";
-import { ChangingMessageContext, IsBlockedContext, BlockedUsersContext } from "./SSEProvider";
+import { ChangingMessageContext, IsBlockedContext, BlockedUsersContext, MyLoginContext } from "./SSEProvider";
 
 import styles from "../styles/chatPage.module.css";
 
@@ -16,7 +16,6 @@ const SendMessage = ({chatId, login}) => {
     const surname = searchParams.get('surname');
     const {postData, getData} = useHttp();
     const ref = useRef({});
-    const [myLogin, setMyLogin] = useState('');
     const [initial, setInitial] = useState(true);
     const [typing, setTyping] = useState(false);
     const [lastMessage, setLastMessage] = useState('');
@@ -24,18 +23,15 @@ const SendMessage = ({chatId, login}) => {
     const {changingMessage, setChangingMessage} = useContext(ChangingMessageContext);
     const isBlocked = useContext(IsBlockedContext);
     const blockedUsers = useContext(BlockedUsersContext);
-
-    useEffect(() => {
-        setMyLogin(localStorage.getItem('myLogin'));
-    }, []);
+    const myLogin = useContext(MyLoginContext);
 
     useEffect(() => {
         process === 'error' ? ref.current.value = lastMessage : ref.current.value = '';
     }, [process]);
 
     useEffect(() => {
-        !initial ? typing ? getData(`${BASE_URL}/setTyping/${localStorage.getItem('myLogin')}/${chatId}`) 
-        : getData(`${BASE_URL}/resetTyping/${localStorage.getItem('myLogin')}`) : setInitial(false);
+        !initial ? typing ? getData(`${BASE_URL}/setTyping/${myLogin}/${chatId}`) 
+        : getData(`${BASE_URL}/resetTyping/${myLogin}`) : setInitial(false);
     }, [typing]);
 
     useEffect(() => {
@@ -66,7 +62,7 @@ const SendMessage = ({chatId, login}) => {
     }
 
     const setTypingState = (e) => (!typing && e.target.value.length) || (typing && !e.target.value.length) ? setTyping(!typing) : null;
-    const onBlur = () => typing ? setTyping(!typing) : null;
+    const onBlur = () => typing ? setTyping(false) : null;
     const onFocus = (e) => e.target.value.length ? setTyping(true) : null;
 
     return (
