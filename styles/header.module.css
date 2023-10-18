@@ -98,14 +98,10 @@
     }
 
     .input {
-        width: 100%;
-    }
-
-    .label {
-        padding: 0 1rem;
+        width: 200px;
     }
 
     .search {
-        right: calc(1rem + 5px);
+        right: 5px;
     }
 }
